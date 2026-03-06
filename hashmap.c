@@ -23,6 +23,8 @@ uint64_t hashtable_get(HashTable *table, const char *key);
 bool hashtable_delete(HashTable *table, const char *key);
 // Expands the hashtable if you try an add an entry when count / capacity >= .75
 static bool hashtable_expand(HashTable *table);
+// dump hashtable
+void hashtable_dump(HashTable *table);
 
 typedef struct Entry {
   char *key;
@@ -202,6 +204,17 @@ uint64_t hashtable_get(HashTable *table, const char *key) {
   }
   // return false
   return UINT64_MAX;
+}
+
+void hashtable_dump(HashTable *table) {
+  for (size_t i = 0; i < table->capacity; i++) {
+    if (table->entries[i].key == NULL || table->entries[i].key == TOMBSTONE) {
+      printf("Entry %ld: Key: NULL | Value: N/A \n", i);
+    } else {
+      printf("Entry %ld: Key: %s | Value: %" PRIu64 "\n", i,
+             table->entries[i].key, table->entries[i].value);
+    }
+  }
 }
 
 int main() {}
